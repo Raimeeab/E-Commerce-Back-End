@@ -1,7 +1,7 @@
 {
   "name": "module-13-challenge-orm",
   "version": "1.0.0",
-  "description": "",
+  "description": "<img alt=\"GitHub Followers\" src=\"https://img.shields.io/github/followers/Raimeeab\"> <img alt=\"GitHub License\" src=\"https://img.shields.io/apm/l/vim-mode\">  <img alt=\"GitHub Language Count\" src=\"https://img.shields.io/github/languages/count/Raimeeab/E-Commerce-Back-End\">  <img alt=\"GitHub Commit Activity\" src=\"https://img.shields.io/github/commit-activity/w/Raimeeab/E-Commerce-Back-End\">",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,12 +17,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "express": "^4.17.1",
-    "mysql2": "^2.1.0",
-    "sequelize": "^5.21.7"
+    "mysql2": "^2.3.3",
+    "sequelize": "^5.22.4"
   }
 }

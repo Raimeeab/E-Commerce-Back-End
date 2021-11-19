@@ -5,41 +5,45 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // get all products
 router.get('/', (req, res) => {
-  Product.findAll({
-    include: [
-      Category,
-      {
-        model: Tag,
-        through: ProductTag,
-      },
-    ],
-  })
-    .then((products) => res.json(products))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+  try {
+    Product.findAll({
+      include: [
+        Category,
+        {
+          model: Tag,
+          through: ProductTag,
+        },
+      ],
+    })
+      .then((products) => res.json(products))
+  } catch (err){
+    console.log(err);
+    res.status(500).json(err);
+
+  }
 });
 
 // get one product
 router.get('/:id', (req, res) => {
-  Product.findOne({
-    where: {
-      id: req.params.id,
-    },
-    include: [
-      Category,
-      {
-        model: Tag,
-        through: ProductTag,
+  try {
+    Product.findOne({
+      where: {
+        id: req.params.id,
       },
-    ],
-  })
-    .then((products) => res.json(products))
-    .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
-    });
+      include: [
+        Category,
+        {
+          model: Tag,
+          through: ProductTag,
+        },
+      ],
+    })
+      .then((products) => res.json(products))
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  };
+
 });
 
 // creat new product
@@ -122,13 +126,17 @@ router.delete('/:id', (req, res) => {
       id: req.params.id,
     },
   })
-    .then((products) => {
-      console.log(products);
-      res.json(products);
+    .then((product) => {
+      if(!product) {
+        res.status(404).json({
+          message: "Product does not exist, check ID entry."
+        });
+        return;
+      }
+      res.json(product);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(400).json(err);
+      res.status(500).json(err);
     });
 });
 

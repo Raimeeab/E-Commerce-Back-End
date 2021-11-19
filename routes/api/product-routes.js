@@ -122,13 +122,13 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', async (req, res) => {
  try {
-   // DELETE a product by its `id` value
    const productData = await Product.destroy({
      where: {
        id: req.params.id
      }
    });  
 
+     // If ID does not exist in db, display error
    if (!productData) {
      res.status(404).json({ message: "Product does not exist, check ID entry."});
      return

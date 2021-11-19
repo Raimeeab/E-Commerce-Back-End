@@ -15,10 +15,10 @@ router.get('/', (req, res) => {
         },
       ],
     })
-    .then((tags) => res.json(tags))
+    .then((tags) => res.json(tags));
   } catch (err) {
     res.status(500).json(err);
-  }
+  };
 });
 
 router.get('/:id', (req, res) => {
@@ -36,10 +36,16 @@ router.get('/:id', (req, res) => {
         },
       ],
     })
-    .then((tag) => res.status(200).json(tag));
+    .then((tag) => {
+      if (!tag){
+        res.status(404).json({ message: "No tag found with this"});
+        return
+      };
+      res.status(200).json(tag);
+    })
   } catch (err) {
     res.status(500).json(err);
-  }
+  };
 });
 
 router.post('/', async (req, res) => {
@@ -49,15 +55,34 @@ router.post('/', async (req, res) => {
       tag_name: req.body.tag_name
     });
 
+    if(!tagData) {
+      res.status(404).json({ message: "No tag found with this ID" })
+    }
+
     res.status(200).json(tagData);
 
   } catch (err) {
-    res.status(400).json(err);
-  }
+    res.status(500).json(err);
+  };
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // UPDATE a tag's name by its `id` value
+  try {
+    const tagData = await Tag.update(req.body, {
+      where: {
+        id: req.params.id
+      }
+    });
+
+    if(!tagData) {
+      res.status(404).json({ message: "No tag found with this ID" })
+    }
+
+    res.status(200).json(tagData);
+  } catch (err) {
+    res.status(500).json(err);
+  };
 });
 
 router.delete('/:id', async (req, res) => {
@@ -69,6 +94,7 @@ router.delete('/:id', async (req, res) => {
       }
     });
 
+      // If ID does not exist in db, display error
     if (!tagData) {
       res.status(400).json({ message: "Tag does not exist, check ID entry. "});
       return
@@ -77,7 +103,7 @@ router.delete('/:id', async (req, res) => {
     res.status(200).json(tagData);
   } catch (err) {
     res.status(500).json(err)
-  }
+  };
 });
 
 module.exports = router;

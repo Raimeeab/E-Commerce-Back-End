@@ -1,16 +1,41 @@
 const router = require('express').Router();
-const { Category, Product } = require('../../models');
+const { Category, Product, ProductTag } = require('../../models');
 
 // The `/api/categories` endpoint
 
 router.get('/', (req, res) => {
-  // Find all categories
-  // Include its associated Products
+  try {
+    // Find all categories
+    Category.findAll({
+      // Include its associated Products
+      include: [
+        {
+          model: Product
+        },
+      ],
+    })
+    .then((category) => res.json(category));
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.get('/:id', (req, res) => {
-  // Find one category by its `id` value
-  // Include its associated Products
+  try {
+    // Find one category by its `id` value
+    Category.findOne({
+      // Include its associated Products
+      include: [
+        {
+          model: Product,
+          attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+        },
+      ],
+    })
+    .then((category) => res.json(category));
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 router.post('/', (req, res) => {
@@ -30,6 +55,7 @@ router.delete('/:id', async (req, res) => {
     }
   });
 
+  // If ID does not exist in db, display error
   if(!categoryData) {
     res.status(404).json({ message: "Category does not exist, check ID entry." });
     return

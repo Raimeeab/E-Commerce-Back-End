@@ -120,24 +120,46 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
-  Product.destroy({
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then((product) => {
-      if(!product) {
-        res.status(404).json({
-          message: "Product does not exist, check ID entry."
-        });
-        return;
-      }
-      res.json(product);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
+// router.delete('/:id', (req, res) => {
+//   Product.destroy({
+//     where: {
+//       id: req.params.id,
+//     },
+//   })
+//     .then((product) => {
+//       if(!product) {
+//         res.status(404).json({
+//           message: "Product does not exist, check ID entry."
+//         });
+//         return;
+//       }
+//       res.json(product);
+//     })
+//     .catch((err) => {
+//       res.status(500).json(err);
+//     });
+// });
+
+router.delete('/:id', async (req, res) => {
+ try {
+   const productData = await Product.destroy({
+     where: {
+       id: req.params.id
+     }
+   });  
+
+   console.log(productData);
+   
+   if (!productData) {
+     res.status(404).json({ message: "Product does not exist, check ID entry."});
+     return
+   };
+
+   res.status(200).json(productData);
+
+ } catch (err) {
+   res.status(500).json(err);
+ }
 });
 
 module.exports = router;

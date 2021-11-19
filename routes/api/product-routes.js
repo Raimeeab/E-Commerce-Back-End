@@ -87,11 +87,11 @@ router.put('/:id', (req, res) => {
     },
   })
     .then((product) => {
-      // find all associated tags from ProductTag
+      // Find all associated tags from ProductTag
       return ProductTag.findAll({ where: { product_id: req.params.id } });
     })
     .then((productTags) => {
-      // get list of current tag_ids
+      // GET list of current tag_ids
       const productTagIds = productTags.map(({ tag_id }) => tag_id);
       // create filtered list of new tag_ids
       const newProductTags = req.body.tagIds
@@ -102,12 +102,12 @@ router.put('/:id', (req, res) => {
             tag_id,
           };
         });
-      // figure out which ones to remove
+      // Figure out which ones to remove
       const productTagsToRemove = productTags
         .filter(({ tag_id }) => !req.body.tagIds.includes(tag_id))
         .map(({ id }) => id);
 
-      // run both actions
+      // Run both actions
       return Promise.all([
         ProductTag.destroy({ where: { id: productTagsToRemove } }),
         ProductTag.bulkCreate(newProductTags),
@@ -120,26 +120,6 @@ router.put('/:id', (req, res) => {
     });
 });
 
-// router.delete('/:id', (req, res) => {
-//   Product.destroy({
-//     where: {
-//       id: req.params.id,
-//     },
-//   })
-//     .then((product) => {
-//       if(!product) {
-//         res.status(404).json({
-//           message: "Product does not exist, check ID entry."
-//         });
-//         return;
-//       }
-//       res.json(product);
-//     })
-//     .catch((err) => {
-//       res.status(500).json(err);
-//     });
-// });
-
 router.delete('/:id', async (req, res) => {
  try {
    const productData = await Product.destroy({
@@ -149,14 +129,13 @@ router.delete('/:id', async (req, res) => {
    });  
 
    console.log(productData);
-   
+
    if (!productData) {
      res.status(404).json({ message: "Product does not exist, check ID entry."});
      return
    };
 
-   res.status(200).json(productData);
-
+    res.status(200).json(productData);
  } catch (err) {
    res.status(500).json(err);
  }

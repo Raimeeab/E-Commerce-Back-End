@@ -15,7 +15,13 @@ router.get('/', (req, res) => {
         },
       ],
     })
-    .then((tags) => res.json(tags));
+    .then((tag) => {
+      if(!tag) {
+        res.status(404).json({message: 'No tags found'});
+        return;
+      };
+      res.json(tag);
+    });
   } catch (err) {
     res.status(500).json(err);
   };
@@ -38,7 +44,7 @@ router.get('/:id', (req, res) => {
     })
     .then((tag) => {
       if (!tag){
-        res.status(404).json({ message: "No tag found with this"});
+        res.status(404).json({ message: "No tag found with this ID"});
         return
       };
       res.status(200).json(tag);
@@ -98,9 +104,14 @@ router.delete('/:id', async (req, res) => {
     if (!tagData) {
       res.status(400).json({ message: "Tag does not exist, check ID entry. "});
       return
-    };
+    } else {
+      res.status(200).json({
+        message: "Tag sucessfully deleted",
+        tagData
+      });
 
-    res.status(200).json(tagData);
+    }
+
   } catch (err) {
     res.status(500).json(err)
   };

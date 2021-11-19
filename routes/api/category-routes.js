@@ -10,11 +10,18 @@ router.get('/', (req, res) => {
       // Include its associated Products
       include: [
         {
-          model: Product
+          model: Product, 
+          attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
         },
       ],
     })
-    .then((category) => res.json(category));
+    .then((category) => {
+      if(!category) {
+        res.status(404).json({message: 'No categories found'});
+        return;
+      };
+      res.json(category);
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -24,6 +31,9 @@ router.get('/:id', (req, res) => {
   try {
     // Find one category by its `id` value
     Category.findOne({
+      where: {
+        id: req.params.id
+      },
       // Include its associated Products
       include: [
         {
@@ -32,7 +42,13 @@ router.get('/:id', (req, res) => {
         },
       ],
     })
-    .then((category) => res.json(category));
+    .then((category) => {
+      if (!category) {
+        res.status(404).json({ message: "No category found with this ID" })
+        return
+      };
+      res.status(200).json(category)
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -59,10 +75,12 @@ router.delete('/:id', async (req, res) => {
   if(!categoryData) {
     res.status(404).json({ message: "Category does not exist, check ID entry." });
     return
+  } else {
+    res.status(200).json({
+      message: "Category sucessfully deleted",
+      categoryData
+    });
   };
-
-  res.status(200).json(categoryData);
-  
  } catch (err) {
    res.status(500).json(err);
  }

@@ -15,7 +15,13 @@ router.get('/', (req, res) => {
         },
       ],
     })
-      .then((products) => res.json(products))
+    .then((product) => {
+      if(!product) {
+        res.status(404).json({message: 'No products found'});
+        return;
+      };
+      res.json(product);
+    });
   } catch (err){
     console.log(err);
     res.status(500).json(err);
@@ -38,7 +44,13 @@ router.get('/:id', (req, res) => {
         },
       ],
     })
-      .then((products) => res.json(products))
+    .then((product) => {
+      if (!product) {
+        res.status(404).json({ message: "No product found with this ID" })
+        return
+      };
+      res.status(200).json(product)
+    });
   } catch (err) {
     console.log(err);
     res.status(400).json(err);
@@ -132,9 +144,12 @@ router.delete('/:id', async (req, res) => {
    if (!productData) {
      res.status(404).json({ message: "Product does not exist, check ID entry."});
      return
-   };
-
-    res.status(200).json(productData);
+   }else {
+    res.status(200).json({
+      message: "Product sucessfully deleted",
+      productData
+    });
+  };
  } catch (err) {
    res.status(500).json(err);
  }

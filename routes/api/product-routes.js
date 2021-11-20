@@ -3,7 +3,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
-// get all products
+// GET all products
 router.get('/', (req, res) => {
   try {
     Product.findAll({
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
   }
 });
 
-// get one product
+// GET one product
 router.get('/:id', (req, res) => {
   try {
     Product.findOne({
@@ -58,15 +58,9 @@ router.get('/:id', (req, res) => {
 
 });
 
-// create new product
+// CREATE new product
 router.post('/', (req, res) => {
-  Product.create({
-    product_name: req.body.product_name, 
-    price: req.body.price,
-    stock: req.body.stock,
-    category_id: req.body.category_id,
-    tagId: req.body.tagId
-  })
+  Product.create(req.body)
   .then((product) => {
     // If there's product tags, we need to create pairings to bulk create in the ProductTag model
     if (req.body.tagId.length) {

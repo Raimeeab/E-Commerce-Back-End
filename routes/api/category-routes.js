@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
   try {
 
     if(!req.body.category_name) {
-      res.status(400).json({ message: "" });
+      res.status(400).json({ message: "Entry is null" });
       return;
     };
 
@@ -72,8 +72,32 @@ router.post('/', async (req, res) => {
 
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // UPDATE a category by its `id` value
+  try {
+    
+    const updateCategory = await Category.put(
+      req.body, {
+        where: {
+          id: req.params.id
+        }
+    });
+
+    if (!req.body.id && !req.body.category_name) {
+      res.status(400).json({ message: "Entry is null" });
+      return
+    };
+
+    if (!updateCategory){
+      res.status(404).json({ message: "Category does not exist, check ID entry." });
+      return
+    };
+    
+    res.status(200).json(updateCategory);
+
+  } catch (err) {
+    res.status(500).json(err);
+  };
 });
 
 router.delete('/:id', async (req, res) => {

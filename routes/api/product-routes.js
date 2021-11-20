@@ -135,9 +135,9 @@ router.delete('/:id', async (req, res) => {
 
      // If ID does not exist in db, display error
    if (!productData) {
-     res.status(404).json({ message: "Product does not exist, check ID entry."});
-     return
-   }else {
+     res.status(404).json({ message: "Product does not exist, check ID entry." });
+     return;
+   } else {
     res.status(200).json({
       message: "Product sucessfully deleted",
       productData

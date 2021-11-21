@@ -76,18 +76,19 @@ router.put('/:id', async (req, res) => {
   // UPDATE a category by its `id` value
   try {
     
-    const updateCategory = await Category.put(
+    const updateCategory = await Category.update(
       req.body, {
         where: {
           id: req.params.id
         }
     });
 
-    if (!req.body.id && !req.body.category_name) {
-      res.status(400).json({ message: "Entry is null" });
+    if (!req.body.category_name) {
+      res.status(400).json({ message: "Update unsucessful, no value provided" });
       return
     };
 
+    // TODO: Why does insomnia still send a 200 status response?? 
     if (!updateCategory){
       res.status(404).json({ message: "Category does not exist, check ID entry." });
       return
@@ -97,7 +98,7 @@ router.put('/:id', async (req, res) => {
 
   } catch (err) {
     res.status(500).json(err);
-  };
+   };
 });
 
 router.delete('/:id', async (req, res) => {

@@ -55,14 +55,14 @@ router.get('/:id', (req, res) => {
 router.post('/', async (req, res) => {
   // CREATE a new category
   try {
+    newCategory = await Category.create(req.body);
 
     if(!req.body.category_name) {
       return res.status(400).json({ message: "Entry is null" });
+    } else {
+      res.status(200).json(newCategory);
     };
 
-    newCategory = await Category.create(req.body);
-
-    res.status(200).json(newCategory);
   } catch (err) {
     res.status(500).json(err);
   };

@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
     })
     .then((tag) => {
       if(!tag) {
-        return res.status(404).json({message: 'No tags found'});
+       return res.status(404).json({message: 'No tags found'});
       };
       res.json(tag);
     });
@@ -56,15 +56,15 @@ router.get('/:id', (req, res) => {
 router.post('/', async (req, res) => {
   // CREATE a new tag
   try {
-    const tagData = await Tag.create({
+    const newTag = await Tag.create({
       tag_name: req.body.tag_name
     });
 
-    if(!tagData) {
+    if(!newTag) {
       return res.status(404).json({ message: "No tag found with this ID" });
     };
 
-    res.status(200).json(tagData);
+    res.status(200).json(newTag);
 
   } catch (err) {
     res.status(500).json(err);
@@ -74,7 +74,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   // UPDATE a tag's name by its `id` value
   try {
-    const tagData = await Tag.update(req.body, {
+    const updateTag = await Tag.update(req.body, {
       where: {
         id: req.params.id
       }
@@ -84,11 +84,11 @@ router.put('/:id', async (req, res) => {
       return res.status(400).json({ message: "Update unsucessful, invalid value provided" });
     };
 
-    if(!tagData) {
+    if(!updateTag) {
       return res.status(404).json({ message: "No tag found with this ID" });   
     };
 
-    res.status(200).json(tagData);
+    res.status(200).json(updateTag);
   } catch (err) {
     res.status(500).json(err);
   };
@@ -97,14 +97,14 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   // DELETE on tag by its `id` value
   try {
-    const tagData = await Tag.destroy({
+    const deleteTag = await Tag.destroy({
       where: {
         id: req.params.id
       }
     });
 
       // If ID does not exist in db, display error
-    if (!tagData) {
+    if (!deleteTag) {
       return res.status(400).json({ message: "Tag does not exist, check ID entry. "});
     } else {
       res.status(200).json({

@@ -17,8 +17,7 @@ router.get('/', (req, res) => {
     })
     .then((category) => {
       if(!category) {
-        res.status(404).json({message: 'No categories found'});
-        return;
+        return res.status(404).json({message: 'No categories found'});
       };
       res.json(category);
     });
@@ -44,8 +43,7 @@ router.get('/:id', (req, res) => {
     })
     .then((category) => {
       if (!category) {
-        res.status(404).json({ message: "No category found with this ID" })
-        return
+       return res.status(404).json({ message: "No category found with this ID" });
       };
       res.status(200).json(category)
     });
@@ -59,8 +57,7 @@ router.post('/', async (req, res) => {
   try {
 
     if(!req.body.category_name) {
-      res.status(400).json({ message: "Entry is null" });
-      return;
+      return res.status(400).json({ message: "Entry is null" });
     };
 
     newCategory = await Category.create(req.body);
@@ -83,19 +80,19 @@ router.put('/:id', async (req, res) => {
         }
     });
 
-    if (!req.body.category_name) {
-      res.status(400).json({ message: "Update unsucessful, no value provided" });
-      return
-    };
+    if(!req.body.category_name) {
+      return res.status(400).json({ message: "Update unsucessful, invalid value provided" });
 
-    // TODO: Why does insomnia still send a 200 status response?? 
-    if (!updateCategory){
-      res.status(404).json({ message: "Category does not exist, check ID entry." });
-      return
+    } else if(!updateCategory){ // TODO: Why does insomnia still send a 200 status response?? 
+      return res.status(404).json({ message: "Category does not exist, check ID entry." }); 
+
+    } else {
+      res.status(200).json({
+        message: "Sucessfully updated category",
+        updateCategory
+      });
     };
     
-    res.status(200).json(updateCategory);
-
   } catch (err) {
     res.status(500).json(err);
    };
@@ -112,8 +109,7 @@ router.delete('/:id', async (req, res) => {
 
   // If ID does not exist in db, display error
   if(!categoryData) {
-    res.status(404).json({ message: "Category does not exist, check ID entry." });
-    return
+   return res.status(404).json({ message: "Category does not exist, check ID entry." });
   } else {
     res.status(200).json({
       message: "Category sucessfully deleted",

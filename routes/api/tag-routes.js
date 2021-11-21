@@ -17,8 +17,7 @@ router.get('/', (req, res) => {
     })
     .then((tag) => {
       if(!tag) {
-        res.status(404).json({message: 'No tags found'});
-        return;
+        return res.status(404).json({message: 'No tags found'});
       };
       res.json(tag);
     });
@@ -44,9 +43,9 @@ router.get('/:id', (req, res) => {
     })
     .then((tag) => {
       if (!tag){
-        res.status(404).json({ message: "No tag found with this ID"});
-        return
+        return res.status(404).json({ message: "No tag found with this ID"}); 
       };
+
       res.status(200).json(tag);
     })
   } catch (err) {
@@ -62,8 +61,8 @@ router.post('/', async (req, res) => {
     });
 
     if(!tagData) {
-      res.status(404).json({ message: "No tag found with this ID" })
-    }
+      return res.status(404).json({ message: "No tag found with this ID" });
+    };
 
     res.status(200).json(tagData);
 
@@ -81,9 +80,13 @@ router.put('/:id', async (req, res) => {
       }
     });
 
+    if(!req.body.tag_name) {
+      return res.status(400).json({ message: "Update unsucessful, invalid value provided" });
+    };
+
     if(!tagData) {
-      res.status(404).json({ message: "No tag found with this ID" })
-    }
+      return res.status(404).json({ message: "No tag found with this ID" });   
+    };
 
     res.status(200).json(tagData);
   } catch (err) {
@@ -102,8 +105,7 @@ router.delete('/:id', async (req, res) => {
 
       // If ID does not exist in db, display error
     if (!tagData) {
-      res.status(400).json({ message: "Tag does not exist, check ID entry. "});
-      return
+      return res.status(400).json({ message: "Tag does not exist, check ID entry. "});
     } else {
       res.status(200).json({
         message: "Tag sucessfully deleted",

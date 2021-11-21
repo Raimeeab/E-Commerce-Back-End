@@ -17,8 +17,7 @@ router.get('/', (req, res) => {
     })
     .then((product) => {
       if(!product) {
-        res.status(404).json({message: 'No products found'});
-        return;
+        return res.status(404).json({message: 'No products found'});
       };
       res.json(product);
     });
@@ -46,8 +45,7 @@ router.get('/:id', (req, res) => {
     })
     .then((product) => {
       if (!product) {
-        res.status(404).json({ message: "No product found with this ID" })
-        return
+        return res.status(404).json({ message: "No product found with this ID" });
       };
       res.status(200).json(product)
     });
@@ -135,8 +133,7 @@ router.delete('/:id', async (req, res) => {
 
      // If ID does not exist in db, display error
    if (!productData) {
-     res.status(404).json({ message: "Product does not exist, check ID entry." });
-     return;
+    return res.status(404).json({ message: "Product does not exist, check ID entry." });
    } else {
     res.status(200).json({
       message: "Product sucessfully deleted",

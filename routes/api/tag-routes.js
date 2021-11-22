@@ -84,11 +84,13 @@ router.put('/:id', async (req, res) => {
       return res.status(400).json({ message: "Update unsucessful, invalid value provided" });
     };
 
-    if(!updateTag) {
+    if(!updateTag[0]) {
       return res.status(404).json({ message: "No tag found with this ID" });   
     };
 
-    res.status(200).json(updateTag);
+    res.status(200).json({
+      message: "Successfully updated Tag ",
+      updateTag});
   } catch (err) {
     res.status(500).json(err);
   };
@@ -105,15 +107,13 @@ router.delete('/:id', async (req, res) => {
 
       // If ID does not exist in db, display error
     if (!deleteTag) {
-      return res.status(400).json({ message: "Tag does not exist, check ID entry. "});
-    } else {
-      res.status(200).json({
+      return res.status(404).json({ message: "Tag does not exist, check ID entry. "});
+    }  else {
+      return res.status(200).json({
         message: "Tag sucessfully deleted",
         tagData
       });
-
-    }
-
+    };
   } catch (err) {
     res.status(500).json(err)
   };

@@ -16,12 +16,18 @@
 
 <a name="description"></a>
 ## 📝 Description
+This is a back end application for an e-commerce site, created using a configured working Express API & sequelize to interact with a MySQL database. Internet retail, also known as e-commerce, is the largest sector of the electronics industry, geenrating an estimate of $29 trillion in 2019. Due to their prevalence, the aim of this application is to demonstrate my understanding of the fundamental architecture of these platforms. 
 
-
-![app-demo]()
+![app-demo](./assets/app-demo.gif)
 
 <a name="technologies"></a>
 ## 🕹 Technologies used 
+- Express.js
+- Node
+- Dotenv
+- Sequelize 
+- MySQL2
+- Insomnia
 
 <a name="installation"></a>
 ## ⚙️ Installation 
@@ -29,23 +35,46 @@
 
 1. Git clone this repository onto your local machine and navigate to the file on your terminal. *This can also be done by opening the file on Visual Studios and running it through the intergated terminal.*
 
-![git-clone]()
+![git-clone](./assets/git-clone.gif)
 
-2. In order for the app to function correctly, ensure you have the latest or most stable version of Node.js and that you've entered your MySQL details into the `.env.Example` and rename the file to `.env`.
+2. In order for the app to function correctly, ensure you have the latest or most stable version of Node.js and that you've entered your MySQL details into the `.env.EXAMPLE` and rename the file to `.env`.
 
-![env-example]()
+![env-example](./assets/env.png)
 
-3. In your terminal, run:
+3. Run `npm install` to download all the required dependencies
 
-    - `npm install`
+![install](./assets/install.gif)
+
+4. Create the schema from the MySQL shell by running: 
+    - `mysql -u root -p` (enter password if/when prompted)
+    - `source db/schema.sql`
+ 
+![sql-example](./assets/schema.gif)
+
+5. To start the application, run:
+
     - `npm run start`
 
-![install]()
+![sql-example](./assets/start.gif)
 
 
 <a name="usage"></a>
 ## 🖥 Usage 
+This application allows you to navigate different link routes that display data from the database. 
 
+- GET/ POST routes: <br>
+    `http://localhost:3001/api/products`<br>
+    `http://localhost:3001/api/categories` <br>
+    `http://localhost:3001/api/tags` <br>
+
+     - If you wish to GET a certain id you can do so by adding an `/id` at the end of the link. 
+
+- PUT/DELETE routes: <br>
+    `http://localhost:3001/api/products/:id`<br>
+    `http://localhost:3001/api/categories/:id` <br>
+    `http://localhost:3001/api/tags/:id` <br>
+
+You can set these routes up and run tests using [insomnia](https://docs.insomnia.rest/).
 
 <a name="contributors"></a>
 ## 👥 Contributors

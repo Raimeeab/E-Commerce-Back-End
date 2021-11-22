@@ -83,7 +83,7 @@ router.put('/:id', async (req, res) => {
     if(!req.body.category_name) {
       return res.status(400).json({ message: "Update unsucessful, invalid value provided" });
 
-    } else if(!updateCategory[0]){ // TODO: Why does insomnia still send a 200 status response?? 
+    } else if(!updateCategory[0]){ 
       return res.status(404).json({ message: "Category does not exist, check ID entry." }); 
 
     } else {

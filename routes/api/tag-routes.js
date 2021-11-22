@@ -104,17 +104,18 @@ router.delete('/:id', async (req, res) => {
         id: req.params.id
       }
     });
-
+      console.log(deleteTag);
       // If ID does not exist in db, display error
     if (!deleteTag) {
       return res.status(404).json({ message: "Tag does not exist, check ID entry. "});
     }  else {
       return res.status(200).json({
         message: "Tag sucessfully deleted",
-        tagData
+        deleteTag
       });
     };
   } catch (err) {
+    console.log(err)
     res.status(500).json(err)
   };
 });
